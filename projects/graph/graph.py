@@ -127,7 +127,7 @@ class Graph:
                     s.push(copy)
         
 
-    def dfs_recursive(self, starting_vertex, visited=None):
+    def dfs_recursive(self, starting_vertex, destination_vertex, path = None, visited = None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -135,13 +135,20 @@ class Graph:
         """
         if visited is None:
             visited = set()
-        visited.add(starting_vertex)
-        print(starting_vertex)
-
-        for n in self.get_neighbors(starting_vertex):
+        if path is None:
+            path = []
+        path.append(starting_vertex)
+        cur = starting_vertex
+        visited.add(cur)
+        if cur == destination_vertex:
+            return path
+        for n in self.get_neighbors(cur):
+            copy = path.copy()
             if n not in visited:
-                self.dfs_recursive(n, visited)
-        return visited
+                new_path = self.dfs_recursive(n, destination_vertex, copy, visited)
+                if new_path:
+                    return new_path
+        return None
 
 
 
